@@ -1,9 +1,13 @@
 package com.jara.tictactoe;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,43 +21,133 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         game = new Game();
+        TextView text = (TextView) findViewById(R.id.textView);
+        text.setText("");
     }
 
+    /* Manages tiles and checks game state */
+    @SuppressLint("SetTextI18n")
     public void tileClicked(View view) {
+        TextView text = (TextView) findViewById(R.id.textView);
 
-        int id = view.getId();
+        // only execute when winner text is invisible
+        if (text.getText() == "") {
+            // initialize button and get its coordinates
+            Button b = (Button) view;
+            int[] coordinates = getCoordinates(b.getId());
 
-        Button b = (Button)findViewById(id);
+            // retrieve tile status and set button text
+            Tile tile = game.draw(coordinates[0], coordinates[1]);
+            switch (tile) {
+                case CROSS:
+                    b.setText("X");
+                    break;
+                case CIRCLE:
+                    b.setText("O");
+                    break;
+                case INVALID:
+                    break;
+            }
 
-        int[] coordinates = getCoordinates(id);
+            // retrieve game status and set winner text
+            GameState gamestate = game.gameState(coordinates[0], coordinates[1]);
+            switch (gamestate) {
+                case PLAYER_ONE:
+                    text.setText("Player 1 wins!");
+                    break;
+                case PLAYER_TWO:
+                    text.setText("Player 2 wins!");
+                    break;
+                case GAME_OVER:
+                    text.setText("Game Over...");
+                    break;
+            }
 
-        Tile tile = game.draw(coordinates[0], coordinates[1]);
-
-        switch (tile) {
-            case CROSS:
-                b.setText("X");
-                break;
-            case CIRCLE:
-                b.setText("O");
-                break;
-            case INVALID:
-                b.setText("-");
-                break;
+            // if game is finished show play again button and winner text
+            if (gamestate != GameState.IN_PROGRESS) {
+                Button reset = (Button) findViewById(R.id.Reset);
+                reset.setText("Play again");
+            }
         }
     }
 
+    /* Resets the game and layout */
     public void resetClicked(View view) {
+        // empty game
         game = new Game();
 
+        // if winner text is visible undo winner state
+        TextView text = (TextView) findViewById(R.id.textView);
+        if (text.getText() != "") {
+            Button reset = (Button) view;
+            reset.setText("Reset");
+            text.setText("");
+        }
+
+        // empty all button texts
         for (int id : tileIds) {
-            Button b = (Button)findViewById(id);
+            Button b = (Button) findViewById(id);
             b.setText("");
         }
     }
 
+    /* Stores information in bundle */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        // iterate over button id's
+        for (int id : tileIds) {
+            // retrieve button texts and store in bundle
+            Button b = (Button) findViewById(id);
+            String tileText = (String) b.getText();
+            outState.putString(Integer.toString(id), tileText);
+        }
+
+        // retrieve winner text and visibility and store in bundle
+        TextView text = (TextView) findViewById(R.id.textView);
+        outState.putInt(Integer.toString(R.id.textView), text.getVisibility());
+        outState.putString(Integer.toString(R.id.textView), (String) text.getText());
+
+        // retrieve text reset button and store in bundle
+        Button reset = (Button) findViewById(R.id.Reset);
+        outState.putString(Integer.toString(R.id.Reset), (String) reset.getText());
+
+        // store game in bundle
+        outState.putSerializable("game", game);
+    }
+
+    /* Restores information out of bundle */
+    @Override
+    protected void onRestoreInstanceState(Bundle inState) {
+        super.onRestoreInstanceState(inState);
+
+        // iterate over button id's
+        for (int id : tileIds) {
+            // retrieve button texts and show again
+            Button b = (Button) findViewById(id);
+            String tileText = inState.getString(Integer.toString(id));
+            b.setText(tileText);
+        }
+
+        // retrieve winner text and visibility and restore
+        TextView text = (TextView) findViewById(R.id.textView);
+        int textVis = inState.getInt(Integer.toString(R.id.textView));
+        text.setVisibility(textVis);
+        String winnerText = inState.getString(Integer.toString(R.id.textView), (String) text.getText());
+        text.setText(winnerText);
+
+        // retrieve text reset button and store in bundle
+        Button reset = (Button) findViewById(R.id.Reset);
+        String resetText = inState.getString(Integer.toString(R.id.Reset));
+        reset.setText(resetText);
+
+        // retrieve game info
+        game = (Game) inState.getSerializable("game");
+    }
+
+    /* Returns coordinates of tiles based on input id */
     public int[] getCoordinates(int id) {
-
         switch (id) {
             case R.id.b00:
                 return new int[]{0, 0};
