@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             // if game is finished show play again button and winner text
             if (gamestate != GameState.IN_PROGRESS) {
                 Button reset = (Button) findViewById(R.id.Reset);
-                reset.setText("Play again");
+                reset.setText("   Play again   ");
             }
         }
     }
