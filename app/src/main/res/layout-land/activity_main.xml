@@ -123,6 +123,7 @@
         android:layout_gravity="center"
         android:onClick="resetClicked"
         android:background="#4fab5b"
+        android:textColor="#ffffff"
         android:text="Reset" />
 
     <Space
@@ -135,6 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="#ffffff"
         android:layout_weight="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:visibility="visible" />
