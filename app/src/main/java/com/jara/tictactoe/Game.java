@@ -1,15 +1,25 @@
+/****************************************************************************
+ * Game.java
+ *
+ * appstudio mprog
+ * Jara Linders
+ * 20-04-2018
+ *
+ * This class creates and updates the game board of a tic tac toe game.
+ ***************************************************************************/
+
 package com.jara.tictactoe;
 
 import java.io.Serializable;
 
-import static com.jara.tictactoe.GameState.PLAYER_ONE;
 
 public class Game implements Serializable{
 
     final private int BOARD_SIZE = 3;
     private Tile[][] board;
 
-    private Boolean playerOneTurn;  // true if player 1's turn, false if player 2's turn
+    // true if player 1's turn, false if player 2's turn
+    private Boolean playerOneTurn;
     private int movesPlayed;
 
     /* Creates game board filled with blank tiles */
@@ -28,22 +38,20 @@ public class Game implements Serializable{
         if (board[row][column] == Tile.BLANK) {
             movesPlayed++;
 
-            // draw cross for player 1
+            // draw & return cross for player 1 + switch turn
             if (playerOneTurn) {
                 board[row][column] = Tile.CROSS;
                 playerOneTurn = false;
-
                 return Tile.CROSS;
             }
-            // draw circle for player 2
+            // draw & return circle for player 2 + switch turn
             else {
                 board[row][column] = Tile.CIRCLE;
                 playerOneTurn = true;
-
                 return Tile.CIRCLE;
             }
         }
-        // invaldi if tile is not blank
+        // invalid if tile is not blank
         else {
             return Tile.INVALID;
         }
@@ -115,7 +123,7 @@ public class Game implements Serializable{
             return GameState.GAME_OVER;
         }
 
-        // if no winner and no game over game is still in progress
+        // if no winner and no game over, game is still in progress
         return GameState.IN_PROGRESS;
     }
 }

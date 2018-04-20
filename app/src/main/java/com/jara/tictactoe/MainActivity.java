@@ -1,3 +1,15 @@
+/****************************************************************************
+ * MainActivity.java
+ *
+ * appstudio mprog
+ * Jara Linders
+ * 20-04-2018
+ *
+ * This program implements the TicTacToe app for android phones. Together
+ * with the Game class this program entails all methods and functions for
+ * a two player game.
+ ***************************************************************************/
+
 package com.jara.tictactoe;
 
 import android.annotation.SuppressLint;
@@ -7,13 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
+    // create class variable with tile id's
     protected int[] tileIds = new int[]{R.id.b00, R.id.b01, R.id.b02, R.id.b10,
             R.id.b11, R.id.b12, R.id.b20, R.id.b21, R.id.b22};
 
+    // declare the game of type Game
     protected Game game;
 
     @Override
@@ -30,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
     public void tileClicked(View view) {
         TextView text = (TextView) findViewById(R.id.textView);
 
-        // only execute when winner text is invisible
+        // only execute when winner text is empty
         if (text.getText() == "") {
             // initialize button and get its coordinates
             Button b = (Button) view;
             int[] coordinates = getCoordinates(b.getId());
 
-            // retrieve tile status and set button text
+            // retrieve tile/draw status and set button text
             Tile tile = game.draw(coordinates[0], coordinates[1]);
             switch (tile) {
                 case CROSS:
@@ -76,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         // empty game
         game = new Game();
 
-        // if winner text is visible undo winner state
+        // if winner text is present make it empty again
         TextView text = (TextView) findViewById(R.id.textView);
         if (text.getText() != "") {
             Button reset = (Button) view;
@@ -100,13 +113,11 @@ public class MainActivity extends AppCompatActivity {
         for (int id : tileIds) {
             // retrieve button texts and store in bundle
             Button b = (Button) findViewById(id);
-            String tileText = (String) b.getText();
-            outState.putString(Integer.toString(id), tileText);
+            outState.putString(Integer.toString(id), (String) b.getText());
         }
 
-        // retrieve winner text and visibility and store in bundle
+        // retrieve winner text and store in bundle
         TextView text = (TextView) findViewById(R.id.textView);
-        outState.putInt(Integer.toString(R.id.textView), text.getVisibility());
         outState.putString(Integer.toString(R.id.textView), (String) text.getText());
 
         // retrieve text reset button and store in bundle
@@ -124,25 +135,20 @@ public class MainActivity extends AppCompatActivity {
 
         // iterate over button id's
         for (int id : tileIds) {
-            // retrieve button texts and show again
+            // retrieve button texts and restore
             Button b = (Button) findViewById(id);
-            String tileText = inState.getString(Integer.toString(id));
-            b.setText(tileText);
+            b.setText(inState.getString(Integer.toString(id)));
         }
 
-        // retrieve winner text and visibility and restore
+        // retrieve winner text and restore
         TextView text = (TextView) findViewById(R.id.textView);
-        int textVis = inState.getInt(Integer.toString(R.id.textView));
-        text.setVisibility(textVis);
-        String winnerText = inState.getString(Integer.toString(R.id.textView), (String) text.getText());
-        text.setText(winnerText);
+        text.setText(inState.getString(Integer.toString(R.id.textView)));
 
-        // retrieve text reset button and store in bundle
+        // retrieve text reset button and restore
         Button reset = (Button) findViewById(R.id.Reset);
-        String resetText = inState.getString(Integer.toString(R.id.Reset));
-        reset.setText(resetText);
+        reset.setText(inState.getString(Integer.toString(R.id.Reset)));
 
-        // retrieve game info
+        // restore game info
         game = (Game) inState.getSerializable("game");
     }
 

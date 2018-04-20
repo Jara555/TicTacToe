@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#99cc99"
     tools:context=".MainActivity">
 
     <Space
@@ -20,6 +21,7 @@
 
         <Button
             android:id="@+id/b00"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -29,6 +31,7 @@
 
         <Button
             android:id="@+id/b10"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -38,6 +41,7 @@
 
         <Button
             android:id="@+id/b20"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -47,6 +51,7 @@
 
         <Button
             android:id="@+id/b01"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -56,6 +61,7 @@
 
         <Button
             android:id="@+id/b11"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -65,6 +71,7 @@
 
         <Button
             android:id="@+id/b21"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -74,6 +81,7 @@
 
         <Button
             android:id="@+id/b02"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -83,6 +91,7 @@
 
         <Button
             android:id="@+id/b12"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -92,6 +101,7 @@
 
         <Button
             android:id="@+id/b22"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="tileClicked"
@@ -106,6 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="#4fab5b"
         android:onClick="resetClicked"
         android:text="Reset" />
 
